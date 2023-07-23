@@ -1,0 +1,60 @@
+<%- include('parts/header') %>
+<%- include('parts/navbar') %>
+
+<div class="container">
+  <% if (items.length == 0) { %>
+    <p class="alert alert-danger">
+      There are no items here.
+    </p>  
+  <% } else { %>
+    <table class="table">
+      <!-- Table header -->
+      <thead>
+        <tr>
+          <th scope="col">no</th>
+          <th scope="col" style="text-align: center;">Image</th>
+          <th scope="col">Product Name</th>
+          <!-- <th scope="col">Price</th> -->
+          <th scope="col">Amount</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Address</th>
+          <th scope="col">Status</th>
+          <th scope="col">Date</th>
+          <th scope="col">Time</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <!-- Table body -->
+      <tbody>
+        <% for (let i = 0; i < items.length; i++) { %>
+          <% for (let j = 0; j < items[i].cartItems.length; j++) { %>
+            <tr>
+              <td scope="row"><%= i + 1 %></td>
+              <td><img style="width: 80%; height: 100px;" src="<%= items[i].cartItems[j].image %>"></td>
+              <td style="max-width: 200px;"><%= items[i].cartItems[j].name %></td>
+              <td><%= items[i].cartItems[j].amount %></td>
+              <td><%= items[i].cartItems[j].price * items[i].cartItems[j].amount %> $</td>
+              <td><%= items[i].orderAddress %></td>
+              <td><%= items[i].status %></td>
+              <td><%= new Date(items[i].timestamp).toLocaleDateString('en-US') %></td>
+              <td><%= new Date(items[i].timestamp).toLocaleTimeString('en-US') %></td>
+              <!-- <td> -->
+                <form method="POST" action="/order/delete-one/<%= items[i]._id %>" class="text-center">
+                    <input type="hidden" name="cartId" value="<%= items[i].cartItems[j].cartId %>">
+                    <td style="position: relative;padding-left: 40px;">
+                      <button type="submit" style="position: absolute; right: 0;" class="btn btn-danger">Cancel</button>
+                    </td>
+                </form>
+              <!-- </td> -->
+            </tr>
+          <% } %>
+        <% } %>
+      </tbody>
+    </table>
+    <form method="POST" action="/order/delete-all" class="text-center">
+      <button type="submit" style="position: absolute;right: 200px;" class="btn btn-danger">Cancel All</button>
+    </form>
+  <% } %>
+</div>
+
+<%- include('parts/footer') %>

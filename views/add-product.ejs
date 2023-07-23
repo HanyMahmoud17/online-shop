@@ -1,0 +1,49 @@
+<%- include('parts/header')%>
+<%- include('parts/navbar')%>
+
+<div class="container text-center" >
+<h3>Add Product</h3>
+<form action="/admin/add" method="post" enctype="multipart/form-data" style="width: 80%;margin: 0 auto;">
+    <input type="text" name="name" placeholder="name" class="form-control" required="">
+    <% let nameError=validationErrors.find(err=>err.path=='name') %>
+    <% if(nameError) {%>
+    <p class="alert alert-danger">
+    <%= nameError.msg%>
+    </p>  
+    <%}%>
+    <br>
+    <input type="number" name="price" placeholder="Price" class="form-control" required="">
+    <% let priceError=validationErrors.find(err=>err.path=='price') %>
+    <% if(priceError) {%>
+    <p class="alert alert-danger">
+    <%= priceError.msg%>
+    </p>  
+    <%}%>
+    <br>
+    <textarea type="text" name="description" placeholder="Description" class="form-control" required=""></textarea>
+    <% let descriptionError=validationErrors.find(err=>err.path=='description') %>
+    <% if(descriptionError) {%>
+    <p class="alert alert-danger">
+    <%= descriptionError.msg%>
+    </p>  
+    <%}%>
+    <br>
+    <select type="text" name="category" placeholder="Category" class="form-control" required="">
+        <option value="" selected>chosse a category</option>
+        <option value="clothes">Clothes</option>
+        <option value="phones">Phones</option>
+        <option value="Laptops">Laptops</option>
+    </select>
+    <% let categoryError=validationErrors.find(err=>err.path=='category') %>
+    <% if(categoryError) {%>
+    <p class="alert alert-danger">
+    <%= categoryError.msg%>
+    </p>  
+    <%}%>
+    <br>
+    <input type="file" name="image"  class="form-control">
+    <br>
+    <input type="submit" value="Add-Product" class="btn btn-success">
+</form>
+</div>
+<%- include('parts/footer')%>

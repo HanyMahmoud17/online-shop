@@ -1,0 +1,65 @@
+<%- include('parts/header') %>
+<%- include('parts/navbar') %>
+
+<div class="container">
+    <% if (items.length == 0) { %>
+      <p class="alert alert-danger">
+        There are no items here.
+      </p>  
+    <% } else { %>
+      <table class="table">
+        <!-- Table header -->
+        <thead>
+          <tr>
+            <th scope="col">no</th>
+            <th scope="col" style="text-align: center;">Image</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Total</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <!-- Table body -->
+        <tbody>
+          <% for (let i = 0; i < items.length; i++) { %>
+            <tr>
+              <th scope="row"><%= i + 1 %></th>
+              <td ><img style="width: 100%; height: 100px;" src="<%= items[i].image %>"></td>
+              <td style="max-width: 300px;"><%= items[i].name %></td>
+              <td><%= items[i].price %> $</td>
+              <form method="post">
+                <td><input type="text" name="amount" style="max-width: 50px;" value="<%= items[i].amount %>"></td>
+                <td><%= items[i].price * items[i].amount %> $</td>
+                <td>
+                  <input type="hidden" name="cartId" value="<%= items[i]._id %>">
+                  <input type="hidden" name="name" value="<%= items[i].name %>">
+                  <input type="hidden" name="price" value="<%= items[i].price %>">
+                  <input type="hidden" name="image" value="<%= items[i].image %>">
+                  <input type="hidden" name="productId" value="<%= items[i].productId %>">
+                  <input type="submit" class="btn btn-success" value="Save" formaction="/cart/save">
+                  <input type="submit" class="btn btn-success" value="Order" formaction="/order/verifyOrder">
+                  <input type="submit" class="btn btn-danger" value="Delete" formaction="/cart/delete">
+                </td>
+              </form>
+              <% if(validationError) {%>
+                <p class="alert alert-danger">
+                  <%= validationError.msg%>
+                </p>
+              <%}%>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+      <div>
+      <form method="POST" action="/cart/delete-all" class="text-center">
+        <button type="submit" style="position: absolute;right: 100px;" class="btn btn-danger">Delete All</button>
+      </form>
+      
+      <!-- <form method="POST" action="/order/verifyOrder" class="text-center">
+        <button type="submit" style="position: absolute;right: 200px;" class="btn btn-danger">Order All</button>
+      </form> -->
+    </div>
+    <% } %>
+  </div>
+<%- include('parts/footer') %>

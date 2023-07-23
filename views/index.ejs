@@ -1,0 +1,124 @@
+<%- include('parts/header')%>
+  <%- include('parts/navbar')%>
+
+    <style>
+      /* Add some custom CSS styles here */
+      .container {
+        margin: 0 auto;
+      }
+
+      select.form-control {
+        display: inline-block;
+        width: auto;
+        margin-right: 1rem;
+        border-radius: 0.25rem;
+        font-size: 1.2rem;
+        border: none;
+        padding: 0.5rem 1rem;
+        background-color: #fff;
+        color: #333;
+        box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 0.5rem 2rem;
+        margin: 0 0.5rem;
+        font-size: 1.2rem;
+        border-radius: 0.25rem;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0069d9;
+        cursor: pointer;
+      }
+
+      .card {
+        /* margin: 1rem;
+        padding: 1rem; */
+        /* margin-left: 5px; */
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-0.25rem);
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+      }
+
+      .card-img-top {
+        height: 15rem;
+        object-fit: cover;
+        transition: all 0.3s ease;
+      }
+
+      .card:hover .card-img-top {
+        transform: scale(1.1);
+      }
+      .card-title a{
+        text-decoration: none;
+      }
+      .card-title a:hover {
+        text-decoration: none;
+      }
+      .me {
+        /* margin: 10px; */
+        margin-top: 10px;
+      }
+    </style>
+    <div class="container">
+      <form action="/" method="GET" style="padding-top: 10px;">
+        <button type="submit" class="btn btn-primary" name="category" value="all">All</button>
+        <button type="submit" class="btn btn-primary" name="category" value="clothes">Clothes</button>
+        <button type="submit" class="btn btn-primary" name="category" value="phones">Phones</button>
+        <button type="submit" class="btn btn-primary" name="category" value="laptops">Laptops</button>
+      </form>
+      <br>
+      <% if(validationError) {%>
+        <p class="alert alert-danger">
+          <%= validationError.msg%>
+        </p>
+        <%}%>
+
+
+          <% if(products.length===0 ) {%>
+            <div class="alert alert-danger">
+              there is no product selected
+            </div>
+            <%} else {%>
+              <div class="row" style="padding-top: 10px;">
+                <% for(let product of products) { %>
+                  <!-- col-12 == in small screen to take all 12 col  -->
+                  <div class="col col-12 col-md-6 col-lg-4 col-xl-3 me">
+                    <div class="card" style="width: 15rem;">
+                      <img src="<%= product.image%>" class="card-img-top">
+                      <div class="card-body">
+                        <h5 class="card-title">
+                          <a href="/product/<%= product._id%>">
+                            <%= product.name%>
+                          </a>
+                          <p>Price : <%= product.price%> $</p>
+                        </h5>
+                        <form action="/cart" method="post" class="form-inline">
+                          <div class="form-group mr-2">
+                              <label for="amount" class="mr-2">Amount:</label>
+                              <input type="number" name="amount" id="amount" class="form-control">
+                          </div>
+                          <input type="hidden" name="name" value="<%= product.name%>">
+                          <input type="hidden" name="image" value="<%= product.image%>">
+                          <input type="hidden" name="price" value="<%= product.price%>">
+                          <input type="hidden" name="productId" value="<%= product._id%>">
+                          <input type="hidden" name="redirectTo" value="/">
+                          <button type="submit" class="btn btn-success">Add to Cart</button>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
+                  <%}%>
+              </div>
+              <%}%>
+    </div>
+    <%- include('parts/footer')%>
